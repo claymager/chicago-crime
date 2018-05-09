@@ -4,4 +4,6 @@
 *.png
 *.ipynb
 
+outside_libraries
 data
+plots
