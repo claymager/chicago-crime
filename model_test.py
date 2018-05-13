@@ -62,4 +62,4 @@ mean fscore: {}
         if png:
             plt.figure(dpi=350)
             sns.heatmap(self.conf_mat)
-            plt.savefig("plots/"+filename+self.id+".png")
+            plt.savefig("plots/"+self.logfile+self.id+".png")
