@@ -1,24 +1,25 @@
 import psycopg2 as pg
 import pandas.io.sql as pd_sql
 
-def get_data_from_sql(target, features_sql):
+
+connection_args = {
+    'host': '127.0.0.1', 
+    'user': 'john',
+    'password': 'arst',
+    'dbname': 'chicago_crimes',
+    'port': 5432}
+
+def get_data_from_sql(target, features_sql, since="2015-01-01"):
     """
     Queries my local server
     takes two strings
     returns two dataframes
     """
-    connection_args = {
-        'host': '127.0.0.1', 
-        'user': 'john',
-        'password': 'arst',
-        'dbname': 'chicago_crimes',
-        'port': 5432}
     connection = pg.connect(**connection_args)
-
-    query = "SELECT {} FROM crimes WHERE latitude > 36.62 AND datetime > '2015-01-01'"
-    ys = pd_sql.read_sql(query.format(target), connection)
-    Xs = pd_sql.read_sql(query.format(features_sql), connection)
-
+    query = "SELECT {} FROM agg WHERE latitude > 36.62 AND datetime > '{}'"
+    ys = pd_sql.read_sql(query.format(target, since), connection)
+    Xs = pd_sql.read_sql(query.format(features_sql, since), connection)
+    connection.close()
     return Xs, ys
 
 build_tables_sql = """

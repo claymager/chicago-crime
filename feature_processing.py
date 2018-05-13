@@ -33,7 +33,7 @@ def process_cyclic(arr, method):
         return pd.get_dummies(temp, drop_first=True)
     else:
         return pd.DataFrame(temp)
-        
+
 def process_features(Xs, hour_method="bin", month_method="bin"):
     """
     Main feature engineering function
@@ -43,15 +43,22 @@ def process_features(Xs, hour_method="bin", month_method="bin"):
     *_methods: accept callable or str={"bin", "id", "mcyclic", "hcyclic"}
         warning: callables returning str, int, int64 make dummies. Careful with size.
     """
-    new_df = pd.DataFrame()
     hours = Xs["datetime"].transform(lambda x: x.hour)
-    new_df = new_df.join( process_cyclic(hours, hour_method),
-                          rsuffix="h", how="right" )
+    hours_df = process_cyclic(hours, hour_method)
 
     months = Xs["datetime"].transform(lambda x: x.month-1)
-    new_df = new_df.join( process_cyclic(months, month_method),
-                          rsuffix="m", how="right" )
-    
-    new_df["is_busday"] = Xs["datetime"].transform(np.is_busday)
-    
-    return new_df
+    months_df =  process_cyclic(months, month_method)
+ 
+    business_days = Xs["datetime"].transform(np.is_busday)
+    business_df = pd.DataFrame(business_days)
+
+    out_df = hours_df\
+            .join( months_df, rsuffix="m" )\
+            .join( business_df, rsuffix = "b" )
+
+    str_fields = [ c for c in Xs.columns if type( Xs[c][0] )==str ]
+    for field in str_fields:
+        dummies = pd.get_dummies(Xs[field], drop_first = True)
+        out_df = out_df.join( dummies, rsuffix=field )
+
+    return out_df

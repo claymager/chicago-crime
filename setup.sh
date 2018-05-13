@@ -15,3 +15,4 @@ for i in data/Chicago_Crimes_20*; do
   # remove duplicates
   sort -u $i -o $i
 done
+
