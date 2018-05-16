@@ -4,6 +4,10 @@
 *.png
 *.ipynb
 
-outside_libraries
+setup.sh
+
 data
 plots
+static/models
+static/plots
+static/stats
