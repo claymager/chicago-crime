@@ -6,7 +6,7 @@ connection_args = {
     'host': '127.0.0.1', 
     'user': 'john',
     'password': 'arst',
-    'dbname': 'chicago_crimes',
+    'dbname': 'chicago',
     'port': 5432}
 
 def get_data_from_sql(target, features_sql, since="2015-01-01"):

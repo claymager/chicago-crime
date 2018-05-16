@@ -1,9 +1,9 @@
 #!/bin/bash
-dropdb chicago_crimes
-createdb chicago_crimes
-psql chicago_crimes < bin/build-database.sql
+dropdb chicago
+createdb chicago
+psql chicago < bin/build-database.sql
 
-#tar -xzvf crimes_2001_to_2017.tar.gz -C data/
+tar -xzvf data/crimes_2001_to_2017.tar.gz -C data/
 for i in data/Chicago_Crimes_20*; do
   sed -i '/Location/d' $i
 
