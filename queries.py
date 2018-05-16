@@ -22,6 +22,11 @@ def get_data_from_sql(target, features_sql, since="2015-01-01"):
     connection.close()
     return Xs, ys
 
+def get_loc_desc():
+    connection = pg.connect(**connection_args)
+    query = "SELECT distinct(loc_desc) FROM agg"
+    return pd_sql.read_sql(query, connection)
+
 build_tables_sql = """
 CREATE TABLE crimes(
 	id	 	integer,

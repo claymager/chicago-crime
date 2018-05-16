@@ -10,6 +10,7 @@ from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.svm import SVC
 
 # model_test may call poorly defined functions,
@@ -28,9 +29,12 @@ from feature_processing import process_features
 #target = 'index_crime'
 #target = 'violent_crime'
 #target = 'property_crime'
-target = 'crime_against'
-features_sql = "latitude, longitude, datetime, domestic,  loc_desc"
-filename = "{}_by_mylocDesc".format(target)
+target = 'index_crime'
+features_sql = "latitude, longitude, datetime, loc_desc"
+hour_method = "hcyclic"
+month_method = "mcyclic"
+
+filename = "{}_by_locDesc_noDomestic_noHood".format(target)
 
 def get_models():
     """
@@ -40,12 +44,19 @@ def get_models():
                 for s in ["stratified", "most_frequent"]]
     trees = [ RandomForestClassifier(n_estimators=100,max_depth=d, n_jobs = 3 )
                 for d in range(14,25,4)] 
-    logs = [ LogisticRegression(n_jobs=3, solver="sag", tol=0.1)]
-    knns = [] # KNeighborsClassifier(n_neighbors=n, metric="manhattan", n_jobs=3) for n in range(80,150,9)]
-    svcs = [ SVC(gamma=10**a, tol=0.1) for a in range(-4,4) ] + \
-            [ SVC(C=10**a, tol=0.1) for a in range(-4,4) ]
+    logs = [ LogisticRegression(n_jobs=3, solver="sag", tol=0.01)]
+    adas = [ AdaBoostClassifier(
+        base_estimator = RandomForestClassifier(max_depth=d, n_jobs = 3),
+        n_estimators=100, learning_rate = r/5)
+        for d in range(4,12,2) for r in range(1,10)]
+    # Inconveniently slow
+    knns = []# KNeighborsClassifier(n_neighbors=80, metric="manhattan", n_jobs=3) ]
+    # Unusably slow
+    svcs = []# SVC(gamma=10**a, tol=0.1) for a in range(-4,4) ] + \
+            #[ SVC(C=10**a, tol=0.1) for a in range(-4,4) ]
 
-    return dummies + trees + knns + logs + svcs
+    
+    return dummies + logs + adas+ knns + svcs
 
 
 def get_id(filename = "model_results"):
@@ -63,13 +74,13 @@ def get_id(filename = "model_results"):
     except (FileNotFoundError, UnboundLocalError) as e:
         return 0
 
-def get_processed_data(hour_method="id", month_method="id"):
+def get_processed_data(hour_method=hour_method, month_method=hour_method):
     """
     Retrieves data ready for modeling
     (X_train, X_test, y_train, y_test)
     """
     Xs_raw, ys = get_data_from_sql(target, features_sql)
-    Xs = Xs_raw[["latitude", "longitude", "domestic"]].join( 
+    Xs = Xs_raw[["latitude", "longitude"]].join( 
             process_features(Xs_raw, hour_method=hour_method,
                              month_method=month_method)    )
 
