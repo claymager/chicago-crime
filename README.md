@@ -22,7 +22,7 @@ Edit SQL connections in `queries.py` to something sane.
 As user with PostgreSQL database creation privileges.
 ```sh
 git clone https://claymager/chicago-crime.git
-cd chicago-crime/git
+cd chicago-crime/
 bash setup.sh
 ```
 
