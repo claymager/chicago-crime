@@ -1,12 +1,13 @@
+#!/bin/python3
 import psycopg2 as pg
 import pandas.io.sql as pd_sql
-
+from os import getcwd
 
 connection_args = {
     'host': '127.0.0.1', 
     'user': 'john',
     'password': 'arst',
-    'dbname': 'chicago',
+    'dbname': 'chicago_crimes',
     'port': 5432}
 
 def get_data_from_sql(target, features_sql, since="2015-01-01"):
@@ -102,3 +103,14 @@ FROM crimes_csv
 WHERE
   longitude IS NOT NULL
 ;"""
+
+if __name__ == "__main__":
+    """ builds databases """
+    connection = pg.connect(**connection_args)
+    cur = connection.cursor()
+    cur.execute(build_tables_sql)
+    cwd = getcwd()
+    for years in ["2001_to_2004","2005_to_2007","2008_to_2011","2012_to_2017"]:
+        filepath = cwd + "/data/Chicago_Crimes_{}.csv".format(years)
+        cur.execute(load_csv_str.format(filepath))
+        cur.execute("COMMIT;")

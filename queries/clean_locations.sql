@@ -1,6 +1,6 @@
 BEGIN;
-  --ALTER TABLE crimes ADD COLUMN loc_desc text;
-  --UPDATE crimes SET loc_desc = location_desc;
+  ALTER TABLE crimes ADD COLUMN loc_desc text;
+  UPDATE crimes SET loc_desc = location_desc;
 
   UPDATE crimes SET loc_desc = 'CHA PARKING LOT/GROUNDS'
   WHERE loc_desc = 'CHA PARKING LOT'

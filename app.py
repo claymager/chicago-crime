@@ -10,6 +10,7 @@ from feature_processing import process_features
 
 loc_descs = [loc for loc in get_loc_desc()["loc_desc"] if loc]
 models = dict()
+
 def load_model(modelname):
     if modelname not in models.keys():
         models[modelname] = dict()
@@ -19,7 +20,6 @@ def load_model(modelname):
             models[modelname]["stats"] = jsonfile.read()
         with open("static/models/"+modelname+"_scaler.pkl", "rb") as picklefile:
             models[modelname]["ssc"] = pickle.load(picklefile)
-
 
 app = Flask(__name__)
 app.debug = True
@@ -67,8 +67,6 @@ def foo(modelname):
     response["proba"] = model.predict_proba(X).tolist()
     print(response,"\n\n\n")
     return json.dumps(response), 200
-
-
 
 @app.route("/")
 def index():
