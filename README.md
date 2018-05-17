@@ -4,27 +4,28 @@ Introduction
 Analysis of Chicago crime data to predict crime types
 
 Utilized features: `["latitude", "longitude", "datetime", "loc_desc"]`
-Primary target:
- - `"index_crime"`: Roughly speaking, this is true for serious crimes with an obvious victim.
+
+Primary target: `"index_crime"` Roughly speaking, this is true for serious crimes with an obvious victim.
 
 Alternative targets are available. See settings of `modelling.py`.
 
 Installation
 ============
 
+**Will replace database 'chicago_crimes'** 
+
 Currently, models and data are not provided due to file size limitations.
 
-**Will replace database 'chicago_crimes'**
+
+Edit SQL connections in `queries.py` to something sane.
 
 As user with PostgreSQL database creation privileges.
-
 ```sh
 git clone https://claymager/chicago-crime.git
 cd chicago-crime/git
 bash setup.sh
 ```
 
-Edit SQL connections in `queries.py` to something sane.
 
 Use
 ===
