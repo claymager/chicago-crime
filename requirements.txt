@@ -1,0 +1,11 @@
+postgresql
+python3 packages:
+scikit-learn
+imbalanced-learn
+seaborn
+matplotlib
+pandas
+numpy
+psycopg2
+
+

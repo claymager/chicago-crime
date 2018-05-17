@@ -1,4 +1,4 @@
-#!/run/current-system/sw/bin/python
+#!/bin/python3
 from flask import Flask, render_template, abort, request
 import pandas as pd
 import numpy as np
@@ -36,7 +36,7 @@ def testable_record(record):
     temp_df["loc_desc"][0] = "ABANDONED BUILDING" # So drop_first works
     temp_df["datetime"] = pd.to_datetime(temp_df["datetime"])
     temp_df = temp_df[["latitude","longitude"]].join(process_features(temp_df, "hcyclic","mcyclic"))
-    with open("empty_df.pkl","rb") as picklefile:
+    with open("data/empty_df.pkl","rb") as picklefile:
         empty_df = pickle.load(picklefile)
     temp_df = temp_df.combine_first(empty_df)
     temp_df = temp_df[empty_df.columns]

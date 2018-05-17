@@ -1,4 +1,4 @@
-#!/run/current-system/sw/bin/python
+#!/bin/python3
 import psycopg2 as pg
 import numpy as np
 import pandas as pd

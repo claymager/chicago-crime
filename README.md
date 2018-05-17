@@ -12,10 +12,10 @@ Alternative targets are available. See settings of `modelling.py`.
 Installation
 ============
 
-As user with PostgreSQL database creation privileges:
-WARNING: Will replace database 'chicago_crimes'
+As user with PostgreSQL database creation privileges.
 
-also currently probably broken.
+**Will replace database 'chicago_crimes'**
+
 ```sh
 git clone https://claymager/chicago-crime.git
 cd chicago-crime/git
@@ -41,3 +41,5 @@ To add models to webapp:
 - edit settings section in `mk_model.py`
 - run `mk_model.py`
 - edit `template/index.html#modelName` with new option
+
+Jupyter notebooks are only included for completeness.

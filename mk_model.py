@@ -1,4 +1,4 @@
-#!/run/current-system/sw/bin/python
+#!/bin/python3
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
