@@ -12,9 +12,11 @@ Alternative targets are available. See settings of `modelling.py`.
 Installation
 ============
 
-As user with PostgreSQL database creation privileges.
+Currently, models and data are not provided due to file size limitations.
 
 **Will replace database 'chicago_crimes'**
+
+As user with PostgreSQL database creation privileges.
 
 ```sh
 git clone https://claymager/chicago-crime.git
